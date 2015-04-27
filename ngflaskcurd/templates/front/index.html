@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="App">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>笔记本</title>
+    <link rel="stylesheet" href="/static/bower_components/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/css/style.css">
+  </head>
+
+  <body>
+
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <a class="navbar-brand">笔记本</a>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container" ng-controller="EditorController">
+      <div class="row">
+        <div class="col-sm-3">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h3 class="panel-title"><button class="btn btn-primary btn-xs pull-right" ng-click="create()">新建</button> 我的笔记</h3>
+            </div>
+            <div class="panel-body">
+              <p ng-if="!notes.length">No notes</p>
+              <ul class="list-group">
+                <li class="list-group-item" ng-repeat="note in notes" ng-click="view($index)" ng-class="{active: note.id == content.id}">{{note.title}}<br />
+                <small>{{note.date | date:'short'}}</small></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-9">
+          <div class="panel panel-default" ng-hide="editing">
+            <div class="panel-heading">
+              <h3 class="panel-title">{{content.title}} <button class="btn btn-primary btn-xs pull-right" ng-click="editing = true">编辑</button></h3>
+            </div>
+            <div class="panel-body" markdown="{{content.content}}"></div>
+            <div class="panel-footer">{{content.date | date:'short'}}</div>
+          </div>
+          <form name="editor" class="panel panel-default" ng-show="editing">
+            <div class="panel-heading">
+              <h3 class="panel-title"><input type="text" class="form-control" ng-model="content.title" placeholder="标题" required /></h3>
+            </div>
+            <div class="panel-body">
+              <div class="row">
+                <div class="col-sm-6">
+                  <h3>编辑</h3>
+                  <textarea class="form-control editor" rows="10" ng-model="content.content" placeholder="内容" required></textarea>
+                </div>
+                <div class="col-sm-6">
+                  <h3>预览</h3>
+                  <div class="preview" markdown="{{content.content}}"></div>
+                </div>
+              </div>
+            </div>
+            <div class="panel-footer">
+              <button class="btn btn-primary" ng-click="save()" ng-disabled="editor.$invalid">保存</button>
+              <button class="btn btn-danger pull-right" ng-click="remove()" ng-if="content.id">删除</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <script src="/static/bower_components/angular/angular.min.js"></script>
+    <script src="/static/bower_components/showdown/compressed/showdown.js"></script>
+    <script src="/static/js/app.js"></script>
+    <script src="/static/js/editor.js"></script>
+
+  </body>
+</html>

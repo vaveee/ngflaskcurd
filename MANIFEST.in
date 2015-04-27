@@ -1,0 +1,6 @@
+include README.md
+include CHANGELOG.md
+include LICENSE
+include Makefile
+include requirements.txt
+recursive-include ngflaskcurd *.html *.css *.js *.png *.gif *.json *.py
